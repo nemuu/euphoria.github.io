@@ -1,16 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Flame, Snowflake, Droplets, Wind, Skull, Shield, 
-  Zap, RefreshCw, AlertTriangle, Thermometer, Box, 
-  FlaskConical, ArrowRight, Sword, Check
-} from 'lucide-react';
+const { useState, useEffect, useRef } = React;
+
+// --- 0. 图标库 (替代 lucide-react) ---
+// 为了让代码在浏览器直接运行，我们需要手动定义这些 SVG 图标
+const IconWrapper = ({ d, size = 24, className = "" }) => (
+    <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width={size} height={size} 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        className={className}
+    >
+        <path d={d} />
+    </svg>
+);
+
+const Flame = (p) => <IconWrapper {...p} d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-2.072-4.286-3-6.428C8.607 3.417 10.268 3 12 3c1.732 0 3.393.417 5 1.572C16.072 6.714 15.072 8.857 14 11c-.5 1-1 1.62-1 3a2.5 2.5 0 0 0 2.5 2.5c1.38 0 2-1.12 2-2.5 0-.4-.1-.8-.3-1.1 1.2 1 2.3 2.3 3.3 3.6C19 21 13 23 12 23c-1 0-7-2-8.5-6.5.2-.3.6-.7 1-1 .4-.3.8-.7 1.1-1.1.8.4 1.3.9 1.9 1.1.6.2 1.2.2 1 .1z" />;
+const Snowflake = (p) => <IconWrapper {...p} d="M2 12h20M12 2v20M20 20l-8-8-8 8M4 4l8 8 8-8" />; // 简化版雪花
+const Droplets = (p) => <IconWrapper {...p} d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05zM17 21c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S17.29 11.5 17 10c-.29 1.45-1.14 2.84-2.29 3.76S13 15.8 13 17c0 2.22 1.8 4.05 4 4.05z" />;
+const Wind = (p) => <IconWrapper {...p} d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2" />;
+const Shield = (p) => <IconWrapper {...p} d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />;
+const Sword = (p) => <IconWrapper {...p} d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2" />;
+const Zap = (p) => <IconWrapper {...p} d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />;
+const Thermometer = (p) => <IconWrapper {...p} d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />;
+const Box = (p) => <IconWrapper {...p} d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />;
+const FlaskConical = (p) => <IconWrapper {...p} d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2M8.5 2h7M7 16h10" />;
 
 // --- Game Constants & Data ---
 
 const MAX_ENTROPY = 100;
 const MIN_ENTROPY = -100;
 const DANGER_THRESHOLD = 50; // > 50 or < -50 is dangerous
-const MAX_HAND_SIZE = 5;
 
 // Character: Violet
 const HERO = {
@@ -47,7 +70,8 @@ const CARDS_DB = [
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-export default function AlchemySingularityDemo() {
+// 注意：这里去掉了 export default function，改为普通的函数定义
+const AlchemySingularityDemo = () => {
   // --- State ---
   const [gameState, setGameState] = useState('PLAYER_TURN'); // PLAYER_TURN, ENEMY_TURN, GAME_OVER, VICTORY
   const [entropy, setEntropy] = useState(0);
@@ -58,7 +82,7 @@ export default function AlchemySingularityDemo() {
   const [discard, setDiscard] = useState([]);
   const [combatLog, setCombatLog] = useState(["战斗开始！遭遇 黑曜石魔像。"]);
   const [selectedMaterialId, setSelectedMaterialId] = useState(null);
-  const [animatingEffect, setAnimatingEffect] = useState(null); // For visual feedback
+  const [animatingEffect, setAnimatingEffect] = useState(null); 
 
   // --- Initialization ---
   useEffect(() => {
@@ -73,18 +97,17 @@ export default function AlchemySingularityDemo() {
   // --- Logic: Turn Management ---
   const startTurn = () => {
     setGameState('PLAYER_TURN');
-    setPlayer(p => ({ ...p, block: 0 })); // Reset block
+    setPlayer(p => ({ ...p, block: 0 })); 
     
     // Draw Cards
     let newDeck = [...deck];
     let newDiscard = [...discard];
     let newHand = [...hand];
 
-    // Simple draw logic for demo (fill to 5)
     while (newHand.length < 5) {
       if (newDeck.length === 0) {
         if (newDiscard.length === 0) break;
-        newDeck = [...newDiscard].sort(() => Math.random() - 0.5); // Shuffle
+        newDeck = [...newDiscard].sort(() => Math.random() - 0.5);
         newDiscard = [];
       }
       newHand.push(newDeck.pop());
@@ -98,19 +121,8 @@ export default function AlchemySingularityDemo() {
   const endTurn = async () => {
     setGameState('ENEMY_TURN');
     
-    // Enemy Action
     setTimeout(() => {
       let damage = enemy.intent.value;
-      
-      // Check Enemy State Modifiers
-      if (enemy.state === 'LIQUID') {
-         // Liquid enemies might attack faster but weaker? Or just normal for now.
-      }
-      if (enemy.state === 'GAS') {
-        // Gas attacks are hard to block? (Pierce) - Simplified for demo
-      }
-
-      // Player Block
       let actualDamage = Math.max(0, damage - player.block);
       setPlayer(p => ({ ...p, hp: Math.max(0, p.hp - actualDamage) }));
       
@@ -119,7 +131,6 @@ export default function AlchemySingularityDemo() {
       if (player.hp - actualDamage <= 0) {
         setGameState('GAME_OVER');
       } else {
-        // Prepare next turn
         startTurn();
       }
     }, 1000);
@@ -134,18 +145,17 @@ export default function AlchemySingularityDemo() {
     // Handle Material Selection
     if (card.type === 'MATERIAL') {
       if (selectedMaterialId === cardIndex) {
-        setSelectedMaterialId(null); // Deselect
+        setSelectedMaterialId(null); 
       } else {
-        setSelectedMaterialId(cardIndex); // Select
+        setSelectedMaterialId(cardIndex); 
         log(`选择了素材: ${card.name}。请点击另一张卡牌进行融合。`);
       }
       return;
     }
 
-    // Handle Synthesis (If material is selected)
+    // Handle Synthesis
     if (selectedMaterialId !== null) {
       const materialCard = hand[selectedMaterialId];
-      // Create new synthesized card
       const newCard = {
         ...card,
         name: `${materialCard.name.charAt(0)}·${card.name}`,
@@ -155,10 +165,8 @@ export default function AlchemySingularityDemo() {
         desc: `(炼成) ${card.desc} ${materialCard.effectMod?.vuln ? '+易伤' : ''}`
       };
 
-      // Update Hand: Remove material, replace target with new card
       const newHand = [...hand];
       newHand[cardIndex] = newCard;
-      // Filter out the material card by index. Note: selectedMaterialId is an index
       const filteredHand = newHand.filter((_, idx) => idx !== selectedMaterialId);
       
       setHand(filteredHand);
@@ -168,20 +176,17 @@ export default function AlchemySingularityDemo() {
     }
 
     // --- Normal Card Play Logic ---
-
-    // 1. Entropy Check
     let newEntropy = clamp(entropy + card.entropy, MIN_ENTROPY, MAX_ENTROPY);
     
-    // Overheat/Freeze Limit Check (Crash)
+    // Overheat/Freeze Limit
     if (Math.abs(newEntropy) >= 100) {
       log(`系统崩溃！熵值达到极限！`);
-      setEntropy(0); // Reset hard
-      setGameState('ENEMY_TURN'); // End turn immediately punishment
-      // In full game, take damage or lose cards
+      setEntropy(0);
+      setGameState('ENEMY_TURN');
       return; 
     }
 
-    // Danger Zone Damage (Self Burn)
+    // Danger Zone
     let selfDamage = 0;
     if (Math.abs(entropy) > DANGER_THRESHOLD) {
       selfDamage = 3;
@@ -189,21 +194,19 @@ export default function AlchemySingularityDemo() {
       log(`危险区辐射造成 ${selfDamage} 点自身伤害！`);
     }
 
-    // 2. Calculate Damage & Reaction
+    // Calculate Damage & Reaction
     let finalDamage = card.damage;
     let reactionTriggered = false;
     let nextEnemyState = enemy.state;
 
-    // Danger Zone Bonus
     if (Math.abs(entropy) > DANGER_THRESHOLD) {
       finalDamage = Math.floor(finalDamage * 1.5);
     }
 
-    // Reaction Logic
     if (card.element === 'FIRE' && enemy.state === 'SOLID') {
       nextEnemyState = 'LIQUID';
       log("反应：融化！(破甲)");
-      setEnemy(e => ({ ...e, block: 0 })); // Melt removes armor
+      setEnemy(e => ({ ...e, block: 0 }));
       reactionTriggered = true;
       setAnimatingEffect('MELT');
     } else if ((card.element === 'HEAT' || card.element === 'FIRE') && enemy.state === 'LIQUID') {
@@ -215,8 +218,6 @@ export default function AlchemySingularityDemo() {
     } else if (card.element === 'ICE' && enemy.state === 'GAS') {
       nextEnemyState = 'SOLID';
       log("反应：凝华！(冻结)");
-      // Freeze mechanic: maybe skips enemy turn or adds massive block to player?
-      // For demo: just state change + damage
       finalDamage += 5;
       reactionTriggered = true;
       setAnimatingEffect('FREEZE');
@@ -226,13 +227,10 @@ export default function AlchemySingularityDemo() {
         reactionTriggered = true;
     }
 
-    // Apply specific card logics
-    if (card.id === 'c7' && entropy > 30) { // Thermal Siphon
-        // Draw logic
+    if (card.id === 'c7' && entropy > 30) { 
         log("热力虹吸生效：额外抽牌");
     }
 
-    // 3. Apply Effects to Enemy
     let damageDealt = Math.max(0, finalDamage - enemy.block);
     let remainingBlock = Math.max(0, enemy.block - finalDamage);
     
@@ -243,24 +241,20 @@ export default function AlchemySingularityDemo() {
       state: nextEnemyState
     }));
 
-    // 4. Apply Effects to Player
     setPlayer(p => ({
       ...p,
       block: p.block + card.block,
       ultCharge: reactionTriggered ? Math.min(HERO.ultMax, p.ultCharge + 1) : p.ultCharge
     }));
 
-    // 5. Update State
     setEntropy(newEntropy);
     setHand(hand.filter((_, i) => i !== cardIndex));
     setDiscard([...discard, card]);
 
-    // 6. Check Win
     if (enemy.hp - damageDealt <= 0) {
       setGameState('VICTORY');
     }
 
-    // Clear animation after short delay
     setTimeout(() => setAnimatingEffect(null), 1000);
   };
 
@@ -269,10 +263,9 @@ export default function AlchemySingularityDemo() {
     if (player.ultCharge < HERO.ultMax) return;
 
     log("必杀技：热寂奇点！");
-    // Deal damage equal to absolute entropy
-    const dmg = Math.abs(entropy) + 40; // Base 40 + Entropy
+    const dmg = Math.abs(entropy) + 40; 
     setEnemy(e => ({ ...e, hp: Math.max(0, e.hp - dmg) }));
-    setEntropy(0); // Reset entropy
+    setEntropy(0); 
     setPlayer(p => ({ ...p, ultCharge: 0 }));
     setAnimatingEffect('ULTIMATE');
     
@@ -307,9 +300,28 @@ export default function AlchemySingularityDemo() {
     }
   };
 
-  // --- Render ---
+  // --- Styles Helpers ---
+  function getCardStyle(type) {
+    switch (type) {
+        case 'ATTACK': return 'bg-slate-200 text-slate-900 border-b-4 border-red-500';
+        case 'SKILL': return 'bg-slate-200 text-slate-900 border-b-4 border-blue-500';
+        case 'MATERIAL': return 'bg-amber-100 text-amber-900 border-b-4 border-amber-500 border-2 border-amber-300';
+        default: return 'bg-white text-black';
+    }
+  }
+
+  function getCardIcon(element) {
+    switch (element) {
+        case 'FIRE': return <Flame className="text-red-500" size={24} />;
+        case 'ICE': return <Snowflake className="text-cyan-500" size={24} />;
+        case 'HEAT': return <Thermometer className="text-orange-500" size={24} />;
+        default: return <div className="w-6 h-6" />;
+    }
+  }
+
+  // --- Main Render ---
   return (
-    <div className="w-full h-[600px] bg-slate-900 text-slate-100 font-sans overflow-hidden relative flex flex-col select-none">
+    <div className="w-full h-[600px] bg-slate-900 text-slate-100 font-sans overflow-hidden relative flex flex-col select-none shadow-2xl rounded-xl">
       
       {/* Visual Effects Overlay */}
       {animatingEffect && (
@@ -321,7 +333,7 @@ export default function AlchemySingularityDemo() {
         </div>
       )}
 
-      {/* Top Bar: Entropy & Player HP */}
+      {/* Top Bar */}
       <div className="h-24 bg-slate-800 border-b border-slate-700 flex items-center px-6 justify-between shadow-lg z-10">
         <div className="flex flex-col gap-1 w-1/3">
            <div className="flex justify-between text-sm text-slate-400">
@@ -337,7 +349,7 @@ export default function AlchemySingularityDemo() {
         <div className="flex flex-col items-center w-1/3 relative">
            <div className="text-xs font-bold mb-1 tracking-wider text-slate-300">熵值天平 (ENTROPY)</div>
            <div className="w-full h-6 bg-gradient-to-r from-cyan-600 via-gray-500 to-red-600 rounded-full relative border-2 border-slate-600">
-              {/* Safe Zone Markers */}
+              {/* Markers */}
               <div className="absolute left-[25%] top-0 bottom-0 w-0.5 bg-white opacity-30"></div>
               <div className="absolute right-[25%] top-0 bottom-0 w-0.5 bg-white opacity-30"></div>
               <div className="absolute left-[50%] top-0 bottom-0 w-1 bg-white opacity-50"></div>
@@ -369,7 +381,6 @@ export default function AlchemySingularityDemo() {
                     <Zap size={18} fill={player.ultCharge >= HERO.ultMax ? "currentColor" : "none"} />
                     必杀技 ({player.ultCharge}/{HERO.ultMax})
                 </div>
-                {/* Progress Fill for Button */}
                 <div 
                     className="absolute bottom-0 left-0 top-0 bg-purple-800 opacity-50 transition-all duration-500"
                     style={{ width: `${(player.ultCharge/HERO.ultMax)*100}%` }}
@@ -378,10 +389,10 @@ export default function AlchemySingularityDemo() {
         </div>
       </div>
 
-      {/* Main Battlefield */}
+      {/* Battlefield */}
       <div className="flex-1 flex relative bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 to-slate-900">
         
-        {/* Left: Player Sprite (Placeholder) */}
+        {/* Player */}
         <div className="w-1/4 flex items-center justify-center">
            <div className={`w-32 h-48 bg-slate-700 rounded-t-full rounded-b-xl border-b-4 border-purple-500 relative flex items-center justify-center ${Math.abs(entropy)>50 ? 'animate-shake' : ''}`}>
               <div className="absolute -top-10 text-purple-300"><FlaskConical size={40} /></div>
@@ -394,7 +405,7 @@ export default function AlchemySingularityDemo() {
            </div>
         </div>
 
-        {/* Center: Combat Log */}
+        {/* Logs */}
         <div className="w-2/4 pt-4 flex flex-col items-center">
            <div className="bg-black/40 p-4 rounded-lg w-full max-w-md h-32 overflow-hidden text-sm text-slate-300 border border-slate-700/50">
               {combatLog.map((line, i) => (
@@ -402,7 +413,6 @@ export default function AlchemySingularityDemo() {
               ))}
            </div>
            
-           {/* Reaction Hint */}
            <div className="mt-4 text-xs text-slate-500 flex gap-4">
               <span className="flex items-center gap-1"><Flame size={12} /> 火 + <Box size={12} /> 固 = 融化</span>
               <span className="flex items-center gap-1"><Thermometer size={12} /> 热 + <Droplets size={12} /> 液 = 蒸发</span>
@@ -410,7 +420,7 @@ export default function AlchemySingularityDemo() {
            </div>
         </div>
 
-        {/* Right: Enemy */}
+        {/* Enemy */}
         <div className="w-1/4 flex flex-col items-center justify-center relative">
            <div className="text-red-400 font-bold text-lg mb-2 flex items-center gap-2">
              <Sword size={18} /> 意图: {enemy.intent.value} 伤害
@@ -433,7 +443,6 @@ export default function AlchemySingularityDemo() {
               )}
            </div>
 
-           {/* Enemy HP Bar */}
            <div className="w-32 h-4 bg-slate-800 rounded-full mt-4 border border-slate-600 overflow-hidden">
               <div className="h-full bg-red-600 transition-all duration-300" style={{ width: `${(enemy.hp/enemy.maxHp)*100}%` }}></div>
            </div>
@@ -441,7 +450,7 @@ export default function AlchemySingularityDemo() {
         </div>
       </div>
 
-      {/* Bottom: Hand Area */}
+      {/* Hand */}
       <div className="h-48 bg-slate-900/90 border-t border-slate-700 relative flex items-center justify-center gap-4 px-4 z-20">
           
           {gameState === 'ENEMY_TURN' && (
@@ -453,7 +462,6 @@ export default function AlchemySingularityDemo() {
           {gameState === 'VICTORY' && (
               <div className="absolute inset-0 bg-green-900/90 flex flex-col items-center justify-center z-50">
                   <h1 className="text-4xl font-bold text-white mb-4">胜利!</h1>
-                  <p className="mb-6 text-green-200">炼金实验成功。</p>
                   <button onClick={() => window.location.reload()} className="px-6 py-3 bg-white text-green-900 font-bold rounded hover:bg-gray-200">再次实验</button>
               </div>
           )}
@@ -461,7 +469,6 @@ export default function AlchemySingularityDemo() {
           {gameState === 'GAME_OVER' && (
                <div className="absolute inset-0 bg-red-900/90 flex flex-col items-center justify-center z-50">
                <h1 className="text-4xl font-bold text-white mb-4">实验失败</h1>
-               <p className="mb-6 text-red-200">你被摧毁了。</p>
                <button onClick={() => window.location.reload()} className="px-6 py-3 bg-white text-red-900 font-bold rounded hover:bg-gray-200">重试</button>
            </div>
           )}
@@ -477,7 +484,6 @@ export default function AlchemySingularityDemo() {
                     ${selectedMaterialId !== null && card.type !== 'MATERIAL' && selectedMaterialId !== index ? 'animate-pulse ring-2 ring-yellow-200' : ''}
                 `}
             >
-                {/* Header */}
                 <div className="flex justify-between items-start">
                     <span className="text-xs font-bold uppercase tracking-tighter opacity-70">{card.type === 'MATERIAL' ? '素材' : '卡牌'}</span>
                     {card.entropy !== 0 && (
@@ -487,28 +493,18 @@ export default function AlchemySingularityDemo() {
                     )}
                 </div>
 
-                {/* Content */}
                 <div className="flex flex-col items-center text-center my-1">
                     {getCardIcon(card.element)}
                     <h3 className="font-bold text-sm leading-tight mt-1">{card.name}</h3>
                 </div>
 
-                {/* Description */}
                 <p className="text-[10px] leading-3 opacity-90 h-10 overflow-hidden">{card.desc}</p>
                 
-                {/* Footer Stats */}
                 <div className="flex justify-around text-xs font-bold pt-2 border-t border-black/10 mt-1">
                     {card.damage > 0 && <span className="flex items-center gap-0.5 text-red-700"><Sword size={10} />{card.damage}</span>}
                     {card.block > 0 && <span className="flex items-center gap-0.5 text-blue-700"><Shield size={10} />{card.block}</span>}
                     {card.type === 'MATERIAL' && <span className="text-purple-700">融合</span>}
                 </div>
-
-                {/* Selection Overlay for Synthesis Target */}
-                {selectedMaterialId !== null && card.type !== 'MATERIAL' && (
-                    <div className="absolute inset-0 bg-yellow-500/20 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
-                        <span className="bg-black text-white text-xs px-2 py-1 rounded">点击融合</span>
-                    </div>
-                )}
             </div>
           ))}
 
@@ -519,27 +515,11 @@ export default function AlchemySingularityDemo() {
              <span>结束</span>
              <span>回合</span>
           </button>
-
       </div>
     </div>
   );
 }
 
-// --- Styles Helpers ---
-function getCardStyle(type) {
-    switch (type) {
-        case 'ATTACK': return 'bg-slate-200 text-slate-900 border-b-4 border-red-500';
-        case 'SKILL': return 'bg-slate-200 text-slate-900 border-b-4 border-blue-500';
-        case 'MATERIAL': return 'bg-amber-100 text-amber-900 border-b-4 border-amber-500 border-2 border-amber-300';
-        default: return 'bg-white text-black';
-    }
-}
-
-function getCardIcon(element) {
-    switch (element) {
-        case 'FIRE': return <Flame className="text-red-500" size={24} />;
-        case 'ICE': return <Snowflake className="text-cyan-500" size={24} />;
-        case 'HEAT': return <Thermometer className="text-orange-500" size={24} />;
-        default: return <div className="w-6 h-6" />;
-    }
-}
+// 关键点：告诉 React 将组件渲染到页面的 id="root" 上
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<AlchemySingularityDemo />);
