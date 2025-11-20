@@ -27,7 +27,7 @@ const App = () => {
     }, []);
     const apps = [
         {
-            title: "demo",
+            title: "Demo",
             description: "",
             link: "./methodverification.html",
             icon: "🎮",
