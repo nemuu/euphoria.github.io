@@ -27,9 +27,6 @@ const App = () => {
     useEffect(() => {
         setMounted(true);
     }, []);
-
-    // 这里定义你的应用列表
-    // link 指向你复制 template.html 后生成的文件名
     const apps = [
         {
             title: "演示demo",
@@ -59,17 +56,6 @@ const App = () => {
                     {apps.map((app, index) => (
                         <AppCard key={index} {...app} />
                     ))}
-                    
-                    {/* 添加新项目的提示卡片 */}
-                    {/* <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] text-gray-400 hover:border-blue-300 hover:text-blue-400 transition-colors cursor-help">
-                        <span className="text-4xl mb-2">+</span>
-                        <p className="font-medium">添加新页面</p>
-                        <p className="text-xs mt-2 max-w-[200px]">
-                            1. 复制 template.html 为 new.html<br/>
-                            2. 创建 New.jsx<br/>
-                            3. 修改 new.html 指向 New.jsx
-                        </p>
-                    </div> */}
                 </div>
 
                 <footer className="mt-16 text-center text-gray-400 text-sm">
