@@ -25,19 +25,22 @@ const App = () => {
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // 这里定义你的应用列表
+    // link 指向你复制 template.html 后生成的文件名
     const apps = [
         {
-            title: "玩法demo",
+            title: "demo",
             description: "",
-            link: "./methodverification.html", 
+            link: "./methodverification.html",
             icon: "🎮",
             color: "bg-purple-500"
         }
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans">
-            <div className={`max-w-5xl mx-auto transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans flex flex-col justify-center items-center">
+            <div className={`max-w-5xl w-full mx-auto transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 
                 {/* 头部 */}
                 <header className="mb-12 text-center">
@@ -45,20 +48,13 @@ const App = () => {
                         React <span className="text-blue-600">Playground</span>
                     </h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        导航页面
+                        点击下方的卡片跳转。
                     </p>
                 </header>
-
-                {/* 卡片网格 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {apps.map((app, index) => (
                         <AppCard key={index} {...app} />
                     ))}
-                    
-                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] text-gray-400 hover:border-blue-300 hover:text-blue-400 transition-colors cursor-help">
-                        <span className="text-4xl mb-2">+</span>
-                        <p className="font-medium">其他</p>
-                    </div>
                 </div>
 
                 <footer className="mt-16 text-center text-gray-400 text-sm">
