@@ -1,6 +1,5 @@
 const { useState, useEffect } = React;
 
-// 导航卡片组件
 const AppCard = ({ title, description, link, icon, color }) => (
     <a 
         href={link}
@@ -20,7 +19,6 @@ const AppCard = ({ title, description, link, icon, color }) => (
     </a>
 );
 
-// 主导航页面
 const App = () => {
     const [mounted, setMounted] = useState(false);
 
@@ -29,9 +27,9 @@ const App = () => {
     }, []);
     const apps = [
         {
-            title: "演示demo",
+            title: "玩法demo",
             description: "",
-            link: "./methodverification.html",  // 对应下面创建的 HTML 文件
+            link: "./methodverification.html", 
             icon: "🎮",
             color: "bg-purple-500"
         }
@@ -47,7 +45,7 @@ const App = () => {
                         React <span className="text-blue-600">Playground</span>
                     </h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        导航页
+                        导航页面
                     </p>
                 </header>
 
@@ -56,6 +54,14 @@ const App = () => {
                     {apps.map((app, index) => (
                         <AppCard key={index} {...app} />
                     ))}
+                    
+                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] text-gray-400 hover:border-blue-300 hover:text-blue-400 transition-colors cursor-help">
+                        <span className="text-4xl mb-2">+</span>
+                        <p className="font-medium">其他</p>
+                        <p className="text-xs mt-2 max-w-[200px]">
+                            快了...
+                        </p>
+                    </div>
                 </div>
 
                 <footer className="mt-16 text-center text-gray-400 text-sm">
