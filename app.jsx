@@ -29,30 +29,18 @@ const App = () => {
     }, []);
 
     // 这里定义你的应用列表
+    // link 指向你复制 template.html 后生成的文件名
     const apps = [
         {
-            title: "验证demo",
-            description: "",
-            link: "./methodverification.html",  // 对应下面创建的 HTML 文件
+            title: "井字棋游戏",
+            description: "经典的 Tic-Tac-Toe 游戏，演示 React 状态管理。",
+            link: "./game.html",  // 对应下面创建的 HTML 文件
             icon: "🎮",
             color: "bg-purple-500"
-        },
-        // {
-        //     title: "待办事项清单",
-        //     description: "一个简单的 Todo List (示例链接)。",
-        //     link: "./todo.html", // 这是一个假设的链接，你需要创建 todo.html 和 Todo.jsx
-        //     icon: "📝",
-        //     color: "bg-green-500"
-        // },
-        // {
-        //     title: "计算器",
-        //     description: "基础数学计算功能 (示例链接)。",
-        //     link: "./calc.html",
-        //     icon: "🧮",
-        //     color: "bg-orange-500"
-        // }
+        }
     ];
-        return (
+
+    return (
         <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans">
             <div className={`max-w-5xl mx-auto transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 
@@ -62,7 +50,7 @@ const App = () => {
                         React <span className="text-blue-600">Playground</span>
                     </h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        这是我的 React 实验导航页。点击下方的卡片跳转到独立运行的 JSX 演示页面。
+                        导航页
                     </p>
                 </header>
 
@@ -71,6 +59,17 @@ const App = () => {
                     {apps.map((app, index) => (
                         <AppCard key={index} {...app} />
                     ))}
+                    
+                    {/* 添加新项目的提示卡片 */}
+                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] text-gray-400 hover:border-blue-300 hover:text-blue-400 transition-colors cursor-help">
+                        <span className="text-4xl mb-2">+</span>
+                        <p className="font-medium">添加新页面</p>
+                        <p className="text-xs mt-2 max-w-[200px]">
+                            1. 复制 template.html 为 new.html<br/>
+                            2. 创建 New.jsx<br/>
+                            3. 修改 new.html 指向 New.jsx
+                        </p>
+                    </div>
                 </div>
 
                 <footer className="mt-16 text-center text-gray-400 text-sm">
