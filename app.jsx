@@ -42,7 +42,7 @@ const App = () => {
                 {/* 头部 */}
                 <header className="mb-12 text-center">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                        {/* 工 具 */}
+                         工 具
                     </h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         点击下方的卡片跳转。
