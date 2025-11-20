@@ -58,9 +58,6 @@ const App = () => {
                     <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] text-gray-400 hover:border-blue-300 hover:text-blue-400 transition-colors cursor-help">
                         <span className="text-4xl mb-2">+</span>
                         <p className="font-medium">其他</p>
-                        <p className="text-xs mt-2 max-w-[200px]">
-                            快了...
-                        </p>
                     </div>
                 </div>
 
