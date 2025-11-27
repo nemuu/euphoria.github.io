@@ -32,7 +32,14 @@ const App = () => {
             link: "./methodverification.html",
             icon: "🎮",
             color: "bg-purple-500"
-        }
+        },
+        {
+            title: "cardtool",
+            description: "",
+            link: "./czncardtool.html",
+            icon: "🎮",
+            color: "bg-purple-500"
+        },
     ];
 
     return (
