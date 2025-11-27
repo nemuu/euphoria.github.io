@@ -1,48 +1,48 @@
 const { useState, useMemo, useEffect } = React;
-
-// 通用图标 Mock (解决缺少图标库报错)
-const IconMock = ({ name, ...props }) => (
-  <span style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', border:'1px dashed #666', borderRadius:4, padding:4, fontSize:10, color:'#888', minWidth:24, minHeight:24 }} {...props}>
-    {name}
-  </span>
+const IconMock = ({ name, size = 16, className = "", ...props }) => (
+    <span 
+        title={name}
+        className={`inline-flex items-center justify-center border border-dashed border-gray-500 text-gray-500 bg-gray-800/50 rounded select-none ${className}`} 
+        style={{ width: size, height: size, fontSize: Math.max(8, size/2.5) }} 
+        {...props}
+    >
+        {/* 显示前两个字母作为图标代号 */}
+        {name.substring(0, 2)}
+    </span>
 );
-const Sword = (props) => <IconMock name="Sword" {...props} />;
-const Shield = (props) => <IconMock name="Shield" {...props} />;
-const Zap = (props) => <IconMock name="Zap" {...props} />;
-const X = (props) => <IconMock name="X" {...props} />;
-const Info = (props) => <IconMock name="Info" {...props} />;
-const Diamond = (props) => <IconMock name="Diamond" {...props} />;
-const Star = (props) => <IconMock name="Star" {...props} />;
-const Flame = (props) => <IconMock name="Flame" {...props} />;
-const Layers = (props) => <IconMock name="Layers" {...props} />;
-const MousePointerClick = (props) => <IconMock name="MousePointerClick" {...props} />;
-const Save = (props) => <IconMock name="Save" {...props} />;
-const FileText = (props) => <IconMock name="FileText" {...props} />;
-const RotateCcw = (props) => <IconMock name="RotateCcw" {...props} />;
-const Box = (props) => <IconMock name="Box" {...props} />;
-const Plus = (props) => <IconMock name="Plus" {...props} />;
-const Filter = (props) => <IconMock name="Filter" {...props} />;
-const Skull = (props) => <IconMock name="Skull" {...props} />;
-const Hexagon = (props) => <IconMock name="Hexagon" {...props} />;
-const Ghost = (props) => <IconMock name="Ghost" {...props} />;
-const Calendar = (props) => <IconMock name="Calendar" {...props} />;
-const Settings = (props) => <IconMock name="Settings" {...props} />;
-const Check = (props) => <IconMock name="Check" {...props} />;
-const Trash2 = (props) => <IconMock name="Trash2" {...props} />;
-const LogOut = (props) => <IconMock name="LogOut" {...props} />;
-const Copy = (props) => <IconMock name="Copy" {...props} />;
-const XCircle = (props) => <IconMock name="XCircle" {...props} />;
-const Undo2 = (props) => <IconMock name="Undo2" {...props} />;
-const RefreshCw = (props) => <IconMock name="RefreshCw" {...props} />;
-const Files = (props) => <IconMock name="Files" {...props} />;
-const Sparkles = (props) => <IconMock name="Sparkles" {...props} />;
 
-// import React, { useState, useMemo, useEffect } from 'react'; (已清理)
-// import { 
-  Sword, Shield, Zap, X, Info, Diamond, Star, Flame, Layers, 
-  MousePointerClick, Save, FileText, RotateCcw, Box, Plus, Filter, 
-  Skull, Hexagon, Ghost, Calendar, Settings, Check, Trash2, LogOut, Copy, XCircle, Undo2, RefreshCw, Files, Sparkles 
-} from 'lucide-react'; (已转换为 Mock 组件)
+// 为所有用到的图标生成组件
+const Sword = (p) => <IconMock name="Sword" {...p} />;
+const Shield = (p) => <IconMock name="Shield" {...p} />;
+const Zap = (p) => <IconMock name="Zap" {...p} />;
+const X = (p) => <IconMock name="X" {...p} />;
+const Info = (p) => <IconMock name="Info" {...p} />;
+const Diamond = (p) => <IconMock name="Diamond" {...p} />;
+const Star = (p) => <IconMock name="Star" {...p} />;
+const Flame = (p) => <IconMock name="Flame" {...p} />;
+const Layers = (p) => <IconMock name="Layers" {...p} />;
+const MousePointerClick = (p) => <IconMock name="Click" {...p} />;
+const Save = (p) => <IconMock name="Save" {...p} />;
+const FileText = (p) => <IconMock name="File" {...p} />;
+const RotateCcw = (p) => <IconMock name="Reset" {...p} />;
+const Box = (p) => <IconMock name="Box" {...p} />;
+const Plus = (p) => <IconMock name="Plus" {...p} />;
+const Filter = (p) => <IconMock name="Filter" {...p} />;
+const Skull = (p) => <IconMock name="Skull" {...p} />;
+const Hexagon = (p) => <IconMock name="Hex" {...p} />;
+const Ghost = (p) => <IconMock name="Ghost" {...p} />;
+const Calendar = (p) => <IconMock name="Date" {...p} />;
+const Settings = (p) => <IconMock name="Set" {...p} />;
+const Check = (p) => <IconMock name="Check" {...p} />;
+const Trash2 = (p) => <IconMock name="Trash" {...p} />;
+const LogOut = (p) => <IconMock name="Out" {...p} />;
+const Copy = (p) => <IconMock name="Copy" {...p} />;
+const XCircle = (p) => <IconMock name="XC" {...p} />;
+const Undo2 = (p) => <IconMock name="Undo" {...p} />;
+const RefreshCw = (p) => <IconMock name="Ref" {...p} />;
+const Files = (p) => <IconMock name="Files" {...p} />;
+const Sparkles = (p) => <IconMock name="Spark" {...p} />;
+
 
 // --- 数据定义 ---
 
@@ -232,7 +232,7 @@ const CardArt = ({ imageType }) => {
   return (
     <div className={`w-full h-32 bg-gradient-to-b ${getGradient()} relative overflow-hidden`}>
        <div className="absolute inset-0 opacity-50 mix-blend-overlay" 
-            style={{backgroundImage: 'radial-gradient(circle at center, white 0%, transparent 70%)'}}></div>
+           style={{backgroundImage: 'radial-gradient(circle at center, white 0%, transparent 70%)'}}></div>
        <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent opacity-80"></div>
        
        <div className="absolute inset-0 flex items-center justify-center text-white/20 font-bold text-4xl select-none">
@@ -540,13 +540,13 @@ const TransformModal = ({ isOpen, onClose, onSelect }) => {
           <div className="grid grid-cols-8 gap-3">
             {filteredTargets.map((card) => (
               <div key={card.id} className="group relative transform hover:scale-105 transition-transform duration-200">
-                 <Card data={card} customizable={false} readOnly={true} />
-                 <button 
-                   onClick={() => onSelect(card)} 
-                   className="absolute inset-0 bg-indigo-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all border-2 border-indigo-500 rounded-lg cursor-pointer"
-                 >
-                    <span className="bg-indigo-600 text-white px-2 py-1 rounded text-[10px] font-bold shadow-lg">选择</span>
-                 </button>
+                  <Card data={card} customizable={false} readOnly={true} />
+                  <button 
+                    onClick={() => onSelect(card)} 
+                    className="absolute inset-0 bg-indigo-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all border-2 border-indigo-500 rounded-lg cursor-pointer"
+                  >
+                     <span className="bg-indigo-600 text-white px-2 py-1 rounded text-[10px] font-bold shadow-lg">选择</span>
+                  </button>
               </div>
             ))}
              {filteredTargets.length === 0 && (
@@ -559,7 +559,7 @@ const TransformModal = ({ isOpen, onClose, onSelect }) => {
   );
 };
 
-const ChaosDeckBuilder = function () {
+const ChaosDeckBuilder = () => {
   const [starterCardsSource, setStarterCardsSource] = useState(initialStarterCards);
   const [archiveCards, setArchiveCards] = useState([...initialStarterCards]);
   
@@ -783,7 +783,7 @@ const ChaosDeckBuilder = function () {
                 <Card 
                   data={card} 
                   isArchiveCard={true} 
-                  readOnly={true}      
+                  readOnly={true}       
                   onDelete={() => handleDeleteSaved(card.id)}
                   onRemove={() => handleRemoveSaved(card)}
                   onSpecialRemove={() => handleSpecialRemoveSaved(card)}
@@ -805,15 +805,15 @@ const ChaosDeckBuilder = function () {
               <div className="grid grid-cols-4 gap-2">
                 {otherCardsOperationDeck.map((card) => (
                   <div key={card.id} className="relative group">
-                     <Card 
-                       data={card} 
-                       onClick={() => handleConfigureClick(card)} 
-                       onReset={() => handleResetCard(card.id)}
-                       isModified={card.hasTriggeredAura || (card.divineFlash && card.divineFlash !== 'none')} 
-                     />
-                     <div className="absolute -bottom-8 left-0 w-full text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <span className="text-[10px] text-indigo-300 bg-indigo-900/80 px-1.5 py-0.5 rounded-full border border-indigo-500/30 whitespace-nowrap">点击配置</span>
-                     </div>
+                      <Card 
+                        data={card} 
+                        onClick={() => handleConfigureClick(card)} 
+                        onReset={() => handleResetCard(card.id)}
+                        isModified={card.hasTriggeredAura || (card.divineFlash && card.divineFlash !== 'none')} 
+                      />
+                      <div className="absolute -bottom-8 left-0 w-full text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                         <span className="text-[10px] text-indigo-300 bg-indigo-900/80 px-1.5 py-0.5 rounded-full border border-indigo-500/30 whitespace-nowrap">点击配置</span>
+                      </div>
                   </div>
                 ))}
                 {otherCardsOperationDeck.length === 0 && (
@@ -859,7 +859,7 @@ const ChaosDeckBuilder = function () {
                    // 初始卡牌是否显示配置按钮：只有可配置的才显示
                    return (
                       <div key={card.id} className="relative group perspective-1000">
-                         <Card 
+                          <Card 
                             data={card} 
                             readOnly={!card.customizable} // 如果可配置，则非只读（以显示悬停菜单）
                             onClick={card.customizable ? () => handleConfigureClick(card) : undefined}
@@ -867,15 +867,15 @@ const ChaosDeckBuilder = function () {
                             onReset={card.customizable ? () => handleResetCard(card.id) : undefined}
                             isModified={isModified}
                             // 初始卡牌已经在存档中，不显示添加按钮
-                         />
-                          {/* 可配置的初始卡牌提示 */}
-                          {card.customizable && !isModified && (
-                            <div className="absolute -bottom-8 left-0 w-full text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                              <span className="text-[10px] text-purple-300 bg-purple-900/80 px-1.5 py-0.5 rounded-full border border-purple-500/30 whitespace-nowrap">
-                                点击配置
-                              </span>
-                            </div>
-                          )}
+                          />
+                           {/* 可配置的初始卡牌提示 */}
+                           {card.customizable && !isModified && (
+                             <div className="absolute -bottom-8 left-0 w-full text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                               <span className="text-[10px] text-purple-300 bg-purple-900/80 px-1.5 py-0.5 rounded-full border border-purple-500/30 whitespace-nowrap">
+                                 点击配置
+                               </span>
+                             </div>
+                           )}
                       </div>
                    );
                 })}
@@ -928,9 +928,9 @@ const ChaosDeckBuilder = function () {
                 </div>
                 {otherFilter === 'season' && (
                   <div className="flex gap-2 px-2 mt-1 overflow-x-auto pb-1 scrollbar-hide animate-in fade-in slide-in-from-top-2 duration-200">
-                     <div className="flex items-center text-gray-500 mr-1"><RotateCcw size={12} className="rotate-90" /></div>
-                     <button onClick={() => setSeasonSubFilter('catalyst')} className={`px-3 py-0.5 rounded-md text-[10px] font-bold border transition-all ${seasonSubFilter === 'catalyst' ? 'bg-purple-900/60 border-purple-500 text-purple-100' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300'}`}>禁忌的催化剂</button>
-                     <button onClick={() => setSeasonSubFilter('season_2')} className={`px-3 py-0.5 rounded-md text-[10px] font-bold border transition-all ${seasonSubFilter === 'season_2' ? 'bg-blue-900/60 border-blue-500 text-blue-100' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300'}`}>赛季名2</button>
+                      <div className="flex items-center text-gray-500 mr-1"><RotateCcw size={12} className="rotate-90" /></div>
+                      <button onClick={() => setSeasonSubFilter('catalyst')} className={`px-3 py-0.5 rounded-md text-[10px] font-bold border transition-all ${seasonSubFilter === 'catalyst' ? 'bg-purple-900/60 border-purple-500 text-purple-100' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300'}`}>禁忌的催化剂</button>
+                      <button onClick={() => setSeasonSubFilter('season_2')} className={`px-3 py-0.5 rounded-md text-[10px] font-bold border transition-all ${seasonSubFilter === 'season_2' ? 'bg-blue-900/60 border-blue-500 text-blue-100' : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300'}`}>赛季名2</button>
                   </div>
                 )}
               </div>
@@ -962,6 +962,6 @@ const ChaosDeckBuilder = function () {
   );
 }
 
-// --- 自动生成的挂载代码 ---
+// 自动生成的挂载代码
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<ChaosDeckBuilder />);
